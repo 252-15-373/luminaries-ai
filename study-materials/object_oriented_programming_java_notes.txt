@@ -1,0 +1,32 @@
+COURSE: Object-Oriented Programming (Java)
+TOPICS: Classes, 4 Pillars of OOP, Interfaces, Exception Handling, Collections
+
+1. CLASSES, OBJECTS & CONSTRUCTORS
+- Class: A blueprint defining attributes (fields) and behaviors (methods).
+- Object: A runtime instance of a class created in heap memory using the `new` keyword.
+- Constructor: A special method with the same name as the class and no return type, invoked automatically to initialize object state. Supports constructor overloading.
+- `this` keyword: Refers to the current object instance, resolving shadowing between parameters and fields.
+- `super` keyword: Calls the parent class constructor or overridden parent methods.
+
+2. THE FOUR PILLARS OF OOP
+- Encapsulation: Wrapping data and methods together while restricting direct access using `private` fields and providing controlled access via `public` getters and setters.
+- Inheritance: Mechanism where a subclass (`extends`) inherits fields and methods from a superclass (IS-A relationship), promoting code reuse. Java supports single class inheritance and multilevel inheritance, avoiding the diamond problem by disallowing multiple class inheritance.
+- Polymorphism: Ability of an object or method to take multiple forms.
+  * Compile-time (Static): Method Overloading (same method name, different parameter lists).
+  * Runtime (Dynamic): Method Overriding (`@Override` in subclass) resolved via dynamic method dispatch.
+- Abstraction: Hiding internal implementation details and exposing only essential functionality via `abstract` classes and `interface` contracts.
+
+3. ABSTRACT CLASS VS INTERFACE
+- Abstract Class: Can have constructors, instance fields, concrete methods, and abstract methods. Extended using `extends` (one superclass max).
+- Interface: Defines a contract of methods (`public abstract` by default, plus `default` and `static` methods in modern Java). Implemented using `implements` (a class can implement multiple interfaces).
+
+4. EXCEPTION HANDLING
+- Checked Exceptions: Verified at compile-time (e.g., `IOException`, `SQLException`). Must be caught or declared with `throws`.
+- Unchecked Exceptions: Runtime exceptions (e.g., `NullPointerException`, `ArrayIndexOutOfBoundsException`, `ArithmeticException`).
+- `try-catch-finally`: `try` wraps risky code, `catch` handles specific exceptions, and `finally` always executes for cleanup (such as closing files or streams).
+
+5. JAVA COLLECTIONS FRAMEWORK
+- `ArrayList`: Resizable array; $O(1)$ random access, $O(n)$ middle insertion.
+- `LinkedList`: Doubly-linked list; fast $O(1)$ insertion/deletion at ends.
+- `HashSet`: Stores unique elements with $O(1)$ average lookup; no guaranteed order.
+- `HashMap`: Key-value pairs with $O(1)$ average `get` and `put` operations based on `hashCode()` and `equals()`.

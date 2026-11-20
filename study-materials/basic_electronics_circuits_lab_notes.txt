@@ -1,0 +1,32 @@
+COURSE: Basic Electronics & Electrical Circuits Lab
+TOPICS: Circuit Laws, Diodes, Rectifiers, Zener Regulation, BJT & Op-Amp
+
+1. FUNDAMENTAL CIRCUIT LAWS
+- Ohm's Law: Voltage across a resistor is directly proportional to current: $V = I \cdot R$.
+- Electrical Power: $P = V \cdot I = I^2 R = \frac{V^2}{R}$.
+- Kirchhoff's Current Law (KCL): The algebraic sum of currents entering a node equals the sum of currents leaving the node ($\sum I_{in} = \sum I_{out}$).
+- Kirchhoff's Voltage Law (KVL): The algebraic sum of all voltages around any closed loop equals zero ($\sum V = 0$).
+
+2. PN JUNCTION DIODE
+- Forward Bias: Anode connected to positive terminal, cathode to negative. Conducts current once voltage exceeds the barrier potential (approx. $0.7\text{ V}$ for Silicon, $0.3\text{ V}$ for Germanium).
+- Reverse Bias: Blocks current except for a tiny reverse saturation current until breakdown voltage is reached.
+
+3. RECTIFIERS (AC TO DC CONVERSION)
+- Half-Wave Rectifier: Uses $1$ diode; passes only one half-cycle of AC input. High ripple factor ($1.21$), low efficiency ($40.6\%$).
+- Full-Wave Bridge Rectifier: Uses $4$ diodes arranged in a bridge to invert the negative half-cycle so both halves contribute to pulsating DC output.
+  * Ripple Factor: $0.482$ (much smoother than half-wave).
+  * Maximum Efficiency: $81.2\%$.
+  * Peak Inverse Voltage (PIV): $V_m$ across each non-conducting diode.
+- Capacitor Filter: Placed in parallel with the load resistor to charge during peaks and discharge slowly, reducing output ripple voltage.
+
+4. ZENER DIODE VOLTAGE REGULATOR
+- Designed to operate safely in the reverse breakdown region.
+- Maintains a nearly constant output voltage ($V_Z$, e.g., $5.1\text{ V}$) across a load resistor despite variations in input supply voltage or load current, provided a series current-limiting resistor $R_S$ is used.
+
+5. BIPOLAR JUNCTION TRANSISTOR (BJT) & OP-AMP
+- BJT Terminals: Base (B), Collector (C), Emitter (E). Available as NPN and PNP.
+- Current Gain: $\beta = \frac{I_C}{I_B}$, and emitter current $I_E = I_B + I_C$.
+- Operating Regions: Cut-off (OFF switch), Saturation (ON switch), Active (linear amplifier).
+- Operational Amplifier (Op-Amp): High-gain differential amplifier.
+  * Inverting Amplifier Voltage Gain: $A_v = -\frac{R_f}{R_{in}}$
+  * Non-Inverting Amplifier Voltage Gain: $A_v = 1 + \frac{R_f}{R_{in}}$

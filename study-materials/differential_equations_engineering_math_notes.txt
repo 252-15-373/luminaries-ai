@@ -1,0 +1,36 @@
+COURSE: Differential Equations & Linear Algebra (Engineering Math)
+TOPICS: First-Order ODEs, Second-Order ODEs, Cauchy-Euler, Laplace Transforms, Eigenvalues
+
+1. FIRST-ORDER ORDINARY DIFFERENTIAL EQUATIONS (ODEs)
+- Separable Equations: Written as $g(y)\,dy = f(x)\,dx$; solve by integrating both sides directly.
+- Exact Differential Equations: $M(x,y)\,dx + N(x,y)\,dy = 0$ is exact if $\frac{\partial M}{\partial y} = \frac{\partial N}{\partial x}$.
+- First-Order Linear ODE: Standard form $\frac{dy}{dx} + P(x)y = Q(x)$.
+  * Integrating Factor: $\mu(x) = e^{\int P(x)\,dx}$
+  * General Solution: $y \cdot \mu(x) = \int Q(x)\mu(x)\,dx + C$.
+
+2. SECOND-ORDER LINEAR ODEs (CONSTANT COEFFICIENTS)
+- Homogeneous Form: $ay'' + by' + cy = 0$.
+- Characteristic Equation: $ar^2 + br + c = 0$, with discriminant $D = b^2 - 4ac$.
+  * Real & Distinct Roots ($D > 0$): $y_h = C_1 e^{r_1 x} + C_2 e^{r_2 x}$.
+  * Real & Repeated Root ($D = 0$): $y_h = (C_1 + C_2 x)e^{rx}$.
+  * Complex Conjugate Roots ($D < 0$, $r = \alpha \pm i\beta$): $y_h = e^{\alpha x}(C_1 \cos(\beta x) + C_2 \sin(\beta x))$.
+- Non-Homogeneous Form: $y = y_h + y_p$, where $y_p$ is found via Method of Undetermined Coefficients or Variation of Parameters.
+
+3. CAUCHY-EULER EQUATION
+- Standard Form: $x^2 y'' + a x y' + b y = R(x)$ for $x > 0$.
+- Substitution: Let $x = e^z$ (so $z = \ln x$). Replace $x D$ with $\theta$ and $x^2 D^2$ with $\theta(\theta - 1)$, where $\theta = \frac{d}{dz}$. This converts the equation into a constant-coefficient linear ODE in $z$.
+
+4. LAPLACE TRANSFORMS
+- Definition: $L\{f(t)\} = F(s) = \int_0^\infty e^{-st} f(t)\,dt$.
+- Common Transform Pairs:
+  * $L\{1\} = \frac{1}{s}$
+  * $L\{t^n\} = \frac{n!}{s^{n+1}}$
+  * $L\{e^{at}\} = \frac{1}{s - a}$
+  * $L\{\sin(\omega t)\} = \frac{\omega}{s^2 + \omega^2}$
+  * $L\{\cos(\omega t)\} = \frac{s}{s^2 + \omega^2}$
+- Derivative Property: $L\{y'(t)\} = sY(s) - y(0)$ and $L\{y''(t)\} = s^2 Y(s) - s y(0) - y'(0)$. Ideal for solving initial value problems (IVPs) in engineering.
+
+5. LINEAR ALGEBRA: EIGENVALUES & EIGENVECTORS
+- For an $n \times n$ matrix $A$, a non-zero vector $v$ is an eigenvector with eigenvalue $\lambda$ if $Av = \lambda v$.
+- Characteristic Polynomial: Solve $\det(A - \lambda I) = 0$ to find all eigenvalues $\lambda$.
+- For each $\lambda$, solve $(A - \lambda I)v = 0$ to find the corresponding eigenvector(s).

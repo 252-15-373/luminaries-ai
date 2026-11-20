@@ -1,0 +1,36 @@
+COURSE: Data Structures & Algorithms (CSE Core)
+TOPICS: Linear Structures, Trees, Sorting, Dynamic Programming, Graphs
+
+1. LINEAR DATA STRUCTURES
+- Array: Contiguous memory allocation. Random access in $O(1)$ time; insertion/deletion in the middle takes $O(n)$ time.
+- Linked List: Dynamic nodes linked by pointers. Insertion/deletion at head is $O(1)$; search is $O(n)$.
+- Stack (LIFO - Last In, First Out): Operations `push`, `pop`, `peek` all run in $O(1)$. Used in recursion call stacks, undo features, and expression evaluation.
+- Queue (FIFO - First In, First Out): Operations `enqueue` and `dequeue` run in $O(1)$. Used in CPU scheduling and Breadth-First Search (BFS).
+
+2. TREES & BINARY SEARCH TREES (BST)
+- BST Property: For every node, all values in the left subtree are smaller, and all values in the right subtree are larger.
+- Traversals:
+  * Inorder (Left, Root, Right): Prints BST elements in sorted ascending order.
+  * Preorder (Root, Left, Right): Useful for copying or serializing a tree.
+  * Postorder (Left, Right, Root): Useful for deleting a tree from leaves up.
+- Complexity: Balanced BST search/insert/delete is $O(\log n)$; skewed (unbalanced) BST degrades to $O(n)$.
+- AVL Tree: Self-balancing BST where the height difference (balance factor) between left and right subtrees of any node is at most $1$. Uses LL, RR, LR, and RL rotations.
+
+3. SORTING ALGORITHMS
+- Binary Search (requires sorted array): $O(\log n)$ time, $O(1)$ iterative space.
+- Merge Sort: Divide-and-conquer, stable sort. Always $O(n \log n)$ time, $O(n)$ auxiliary space.
+- Quick Sort: Divide-and-conquer, in-place partitioning. Average $O(n \log n)$ time, worst-case $O(n^2)$ if pivot is poorly chosen.
+- Heap Sort: Uses a Binary Max-Heap. Guaranteed $O(n \log n)$ time, $O(1)$ auxiliary space, not stable.
+
+4. DYNAMIC PROGRAMMING (DP)
+- Requirements: Optimal Substructure and Overlapping Subproblems.
+- 0/1 Knapsack Problem: Given $N$ items with weights $wt[i]$ and values $val[i]$, maximize value within capacity $W$.
+  Recurrence: $dp[i][w] = \max(dp[i-1][w], val[i] + dp[i-1][w - wt[i]])$
+  Time Complexity: $O(N \cdot W)$. Greedy fails for 0/1 Knapsack because items cannot be split.
+- Longest Common Subsequence (LCS):
+  If $s1[i] == s2[j]$, $dp[i][j] = 1 + dp[i-1][j-1]$; otherwise $\max(dp[i-1][j], dp[i][j-1])$.
+
+5. GRAPH ALGORITHMS
+- Breadth-First Search (BFS): Uses a Queue. Time complexity $O(V + E)$. Guarantees the shortest path in unweighted graphs.
+- Depth-First Search (DFS): Uses a Stack or recursion. Time complexity $O(V + E)$. Used for cycle detection, connected components, and topological sorting.
+- Dijkstra's Algorithm: Finds shortest paths from a single source in graphs with non-negative edge weights using a Min-Priority Queue in $O((V + E) \log V)$ time.
