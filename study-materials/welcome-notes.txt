@@ -1,0 +1,23 @@
+Luminaries AI — University CSE Core Study Notes
+
+1. Object-Oriented Programming (Java)
+- Class & Object: A class is a blueprint (e.g., Shape, Student) defining fields and methods; an object is a runtime instance created with the `new` keyword.
+- Four Pillars of OOP:
+  1) Encapsulation: Hiding internal state using `private` fields and exposing controlled access via `public` getters and setters.
+  2) Inheritance: A subclass (`extends`) reuses fields and methods from a superclass (e.g., `Circle extends Shape`).
+  3) Polymorphism: One interface, multiple forms—achieved via method overloading (compile-time) and method overriding `@Override` (runtime dynamic dispatch).
+  4) Abstraction: Exposing only essential behavior using `abstract` classes or `interface` contracts.
+
+2. Data Structures & Algorithms (DSA)
+- Time Complexity Cheat Sheet:
+  * Binary Search (Sorted Array): O(log n)
+  * Merge Sort / Heap Sort: O(n log n) worst-case
+  * Quick Sort: O(n log n) average, O(n^2) worst-case
+  * Hash Table Lookup: O(1) average
+- Graph Traversals:
+  * BFS (Breadth-First Search): Uses a Queue (FIFO); guarantees the shortest path in unweighted graphs.
+  * DFS (Depth-First Search): Uses a Stack or Recursion (LIFO); ideal for cycle detection and topological sorting.
+
+3. Operating Systems Basics
+- Process vs. Thread: A process has its own isolated memory space; threads share the same process memory and have lower context-switching overhead.
+- Deadlock Conditions (Coffman): Mutual Exclusion, Hold and Wait, No Preemption, and Circular Wait.
