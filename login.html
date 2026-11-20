@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Log in — Luminaries</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080f0c;
+    --panel: #0c1513;
+    --panel-2: #101c19;
+    --line: rgba(0, 214, 143, .16);
+    --line-strong: rgba(0, 214, 143, .55);
+    --accent: #00d68f;
+    --accent-dim: rgba(0, 214, 143, .12);
+    --accent-text: #04120d;
+    --text: #eaf3f0;
+    --muted: #8fa59e;
+    --danger: #ff6b6b;
+    --radius-pill: 999px;
+    --radius-card: 20px;
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f7f5;
+    --panel: #ffffff;
+    --panel-2: #f7fbf9;
+    --line: rgba(0, 168, 112, .22);
+    --line-strong: rgba(0, 168, 112, .6);
+    --accent: #00a870;
+    --accent-dim: rgba(0, 168, 112, .1);
+    --accent-text: #ffffff;
+    --text: #13221c;
+    --muted: #536960;
+    --danger: #d93838;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background:
+      radial-gradient(60% 45% at 50% 0%, rgba(0, 214, 143, .14), transparent 70%),
+      var(--bg);
+    background-attachment: fixed;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  }
+  .page {
+    min-height: 100%;
+    display: grid;
+  }
+
+  .form-side { display: grid; place-items: center; padding: 40px 24px; }
+  .card {
+    width: 100%; max-width: 440px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    padding: 36px 32px 30px;
+  }
+  .mobile-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; color: var(--text); text-decoration: none; }
+  .mobile-brand svg { width: 38px; height: 38px; }
+  .mobile-brand span { font-family: "Cinzel", Georgia, serif; font-weight: 700; font-size: 22px; letter-spacing: .1em; }
+  .card h2 { font-size: 28px; font-weight: 800; letter-spacing: -.015em; }
+  .card .sub { margin-top: 8px; color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+  .demo-box {
+    margin-top: 20px;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--accent-dim);
+    border: 1px solid var(--line-strong);
+    display: grid;
+    gap: 10px;
+  }
+  .demo-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .demo-box p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  form { margin-top: 20px; display: grid; gap: 18px; }
+  .field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .control {
+    position: relative; display: flex; align-items: center;
+    height: 52px; padding: 0 16px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .control:focus-within { border-color: var(--line-strong); box-shadow: 0 0 0 4px var(--accent-dim); }
+  .control.invalid { border-color: var(--danger); box-shadow: 0 0 0 4px rgba(255, 107, 107, .12); }
+  .control > svg { width: 20px; height: 20px; flex: none; color: var(--muted); stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .control:focus-within > svg { color: var(--accent); }
+  .control input {
+    flex: 1; min-width: 0; height: 100%;
+    background: transparent; border: 0; outline: 0;
+    color: var(--text); font: inherit; font-size: 16px; padding: 0 12px;
+  }
+  .control input::placeholder { color: #5f736c; }
+  .toggle {
+    flex: none; width: 34px; height: 34px; margin-right: -6px;
+    display: grid; place-items: center; background: transparent; border: 0; border-radius: 50%;
+    color: var(--muted); cursor: pointer;
+  }
+  .toggle:hover { color: var(--text); background: var(--accent-dim); }
+  .toggle svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .field-error { min-height: 18px; margin: 6px 0 0 16px; font-size: 13px; color: var(--danger); }
+
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: -4px; }
+  .check { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); cursor: pointer; }
+  .check input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .box { width: 20px; height: 20px; border-radius: 6px; border: 1px solid var(--line-strong); display: grid; place-items: center; transition: background .15s; }
+  .box svg { width: 14px; height: 14px; stroke: var(--accent-text); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+  .check input:checked + .box { background: var(--accent); }
+  .check input:checked + .box svg { opacity: 1; }
+  .check input:focus-visible + .box { box-shadow: 0 0 0 4px var(--accent-dim); }
+  a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .btn {
+    width: 100%;
+    height: 50px; border-radius: var(--radius-pill); border: 0; cursor: pointer;
+    font: inherit; font-size: 15.5px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    transition: transform .1s, filter .15s, background .15s;
+  }
+  .btn:active { transform: scale(.985); }
+  .btn-primary { background: var(--accent); color: var(--accent-text); margin-top: 2px; }
+  .btn-primary:hover { filter: brightness(1.08); }
+  .btn-primary[disabled] { cursor: progress; filter: saturate(.7) brightness(.9); }
+  .btn svg { width: 20px; height: 20px; }
+  .spinner { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(4, 18, 13, .3); border-top-color: var(--accent-text); animation: spin .7s linear infinite; display: none; }
+  .loading .spinner { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .status { min-height: 20px; font-size: 14px; text-align: center; }
+  .status.error { color: var(--danger); }
+  .status.ok { color: var(--accent); }
+
+  .divider { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: 13px; margin: 4px 0; }
+  .divider::before, .divider::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+  .switch { margin-top: 22px; text-align: center; font-size: 14.5px; color: var(--muted); }
+
+  .view[hidden] { display: none; }
+  .strength { display: flex; gap: 6px; margin: 10px 6px 0; }
+  .strength i { flex: 1; height: 4px; border-radius: 4px; background: var(--line); transition: background .2s; }
+  .strength[data-score="1"] i:nth-child(-n+1) { background: var(--danger); }
+  .strength[data-score="2"] i:nth-child(-n+2) { background: #f5b84b; }
+  .strength[data-score="3"] i:nth-child(-n+3) { background: var(--accent); }
+  .strength[data-score="4"] i { background: var(--accent); }
+  .hint { margin: 6px 0 0 16px; font-size: 13px; color: var(--muted); }
+  .terms { align-items: flex-start; line-height: 1.5; }
+  .terms .box { margin-top: 1px; flex: none; }
+
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 24px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); }
+  .tab { height: 42px; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--muted); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .15s, color .15s; }
+  .tab:hover { color: var(--text); }
+  .tab[aria-selected="true"] { background: var(--accent); color: var(--accent-text); }
+
+  @media (max-width: 900px) {
+    .page { grid-template-columns: 1fr; }
+    .form-side { padding: 28px 16px; }
+    .card { padding: 28px 22px 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation-duration: 1.6s; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="29" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+      <circle cx="32" cy="32" r="22" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="1.4 2.7" stroke-linecap="round"/>
+      <path d="M32 3 L34.4 29.6 L61 32 L34.4 34.4 L32 61 L29.6 34.4 L3 32 L29.6 29.6 Z" fill="var(--accent)"/>
+      <path d="M32 32 L41.5 22.5 M32 32 L22.5 22.5 M32 32 L22.5 41.5 M32 32 L41.5 41.5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="page">
+  <section class="form-side">
+    <div class="card">
+      <a class="mobile-brand" href="./index.html" aria-label="Luminaries home">
+        <svg><use href="#logo"/></svg>
+        <span>LUMINARIES</span>
+      </a>
+
+      <div class="tabs" role="tablist" aria-label="Log in or sign up">
+        <button class="tab" type="button" role="tab" id="tabLogin" data-view="login" aria-selected="true">Log in</button>
+        <button class="tab" type="button" role="tab" id="tabSignup" data-view="signup" aria-selected="false">Sign up</button>
+      </div>
+
+      <div class="demo-box">
+        <div class="demo-box-header">
+          <span>&#10022; Quick Guest Access</span>
+          <span>No Sign-Up Needed</span>
+        </div>
+        <p>Want to jump right in? Explore the full AI Study Workspace immediately with pre-loaded study notes and tools.</p>
+        <button class="btn btn-primary" type="button" id="guestDemoBtn">
+          Continue as Guest &rarr;
+        </button>
+      </div>
+
+      <div class="divider" style="margin-top: 18px;">or sign in with email</div>
+
+      <div class="view" id="loginView">
+      <h2>Log in</h2>
+      <p class="sub">Enter your email and password to open your study workspace.</p>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="control" id="emailControl">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="student@university.edu" required>
+          </div>
+          <p class="field-error" id="emailError" role="alert"></p>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="control" id="passwordControl">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Your password" required>
+            <button class="toggle" type="button" data-target="password" aria-label="Show password" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <p class="field-error" id="passwordError" role="alert"></p>
+        </div>
+
+        <div class="row">
+          <label class="check">
+            <input type="checkbox" id="remember" name="remember" checked>
+            <span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+            Keep me logged in
+          </label>
+          <a href="#forgot" id="forgotLink">Forgot password?</a>
+        </div>
+
+        <button class="btn btn-primary" type="submit" id="submitBtn">
+          <span class="spinner" aria-hidden="true"></span>
+          <span id="submitLabel">Log in</span>
+        </button>
+
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="switch">New to Luminaries? <a href="#signup" data-view="signup">Create an account</a></p>
+      </div>
+
+      <div class="view" id="signupView" hidden>
+        <h2>Create your account</h2>
+        <p class="sub">Set up your personal study workspace in under a minute.</p>
+
+        <form id="signupForm" novalidate>
+          <div class="field">
+            <label for="suName">Full name</label>
+            <div class="control" id="suNameControl">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
+              <input id="suName" name="name" type="text" autocomplete="name" placeholder="Your full name" required>
+            </div>
+            <p class="field-error" id="suNameError" role="alert"></p>
+          </div>
+
+          <div class="field">
+            <label for="suEmail">Email</label>
+            <div class="control" id="suEmailControl">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+              <input id="suEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="student@university.edu" required>
+            </div>
+            <p class="field-error" id="suEmailError" role="alert"></p>
+          </div>
+
+          <div class="field">
+            <label for="suPassword">Password</label>
+            <div class="control" id="suPasswordControl">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="suPassword" name="password" type="password" autocomplete="new-password" placeholder="Create a password" required>
+              <button class="toggle" type="button" data-target="suPassword" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </div>
+            <div class="strength" id="strength" data-score="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <p class="hint" id="strengthText">Use 8+ characters with letters, numbers and a symbol.</p>
+            <p class="field-error" id="suPasswordError" role="alert"></p>
+          </div>
+
+          <div class="field">
+            <label for="suConfirm">Confirm password</label>
+            <div class="control" id="suConfirmControl">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              <input id="suConfirm" name="confirm" type="password" autocomplete="new-password" placeholder="Re-enter your password" required>
+              <button class="toggle" type="button" data-target="suConfirm" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+            </div>
+            <p class="field-error" id="suConfirmError" role="alert"></p>
+          </div>
+
+          <div class="field">
+            <label class="check terms">
+              <input type="checkbox" id="terms" name="terms" checked>
+              <span class="box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+              <span>I agree to the <a href="#terms" id="termsLink">Terms</a> and <a href="#privacy" id="privacyLink">Privacy Policy</a>.</span>
+            </label>
+            <p class="field-error" id="termsError" role="alert"></p>
+          </div>
+
+          <button class="btn btn-primary" type="submit" id="suSubmit">
+            <span class="spinner" aria-hidden="true"></span>
+            <span id="suLabel">Create account</span>
+          </button>
+
+          <p class="status" id="suStatus" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="switch">Already have an account? <a href="#login" data-view="login">Log in</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const form = document.getElementById('loginForm');
+  const emailEl = document.getElementById('email');
+  const pwEl = document.getElementById('password');
+  const statusEl = document.getElementById('status');
+  const submitBtn = document.getElementById('submitBtn');
+  const submitLabel = document.getElementById('submitLabel');
+
+  try {
+    const savedState = JSON.parse(localStorage.getItem('luminaries_web_state_v3') || '{}');
+    if (savedState.theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch (_) {}
+
+  function getSavedAccounts() {
+    try { return JSON.parse(localStorage.getItem('luminaries_accounts_v1') || '{}'); }
+    catch (_) { return {}; }
+  }
+  function saveAccount(email, name) {
+    try {
+      const accs = getSavedAccounts();
+      accs[email.toLowerCase()] = { name };
+      localStorage.setItem('luminaries_accounts_v1', JSON.stringify(accs));
+    } catch (_) {}
+  }
+
+  function launchWorkspaceWithUser(displayName) {
+    try {
+      localStorage.setItem('luminaries_logged_in_user', displayName);
+    } catch (_) {}
+    window.location.href = './index.html';
+  }
+
+  document.getElementById('guestDemoBtn').addEventListener('click', () => {
+    const btn = document.getElementById('guestDemoBtn');
+    btn.disabled = true;
+    btn.textContent = 'Opening Workspace…';
+    launchWorkspaceWithUser('Guest');
+  });
+
+  document.getElementById('forgotLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    statusEl.className = 'status ok';
+    statusEl.textContent = 'Tip: Click "Continue as Guest" above for instant access.';
+  });
+
+  document.querySelectorAll('.toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      btn.setAttribute('aria-pressed', String(show));
+      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    });
+  });
+
+  function setError(controlId, errorId, message) {
+    document.getElementById(controlId).classList.toggle('invalid', !!message);
+    document.getElementById(errorId).textContent = message || '';
+  }
+
+  function validate() {
+    const email = emailEl.value.trim();
+    const pw = pwEl.value;
+    let ok = true;
+    if (!email) { setError('emailControl', 'emailError', 'Enter your email address.'); ok = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('emailControl', 'emailError', 'Enter a valid email, like student@university.edu.'); ok = false; }
+    else setError('emailControl', 'emailError', '');
+    if (!pw) { setError('passwordControl', 'passwordError', 'Enter your password.'); ok = false; }
+    else if (pw.length < 6) { setError('passwordControl', 'passwordError', 'Password must be at least 6 characters.'); ok = false; }
+    else setError('passwordControl', 'passwordError', '');
+    return ok;
+  }
+
+  emailEl.addEventListener('input', () => setError('emailControl', 'emailError', ''));
+  pwEl.addEventListener('input', () => setError('passwordControl', 'passwordError', ''));
+
+  function setLoading(on) {
+    submitBtn.disabled = on;
+    submitBtn.classList.toggle('loading', on);
+    submitLabel.textContent = on ? 'Logging in…' : 'Log in';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusEl.className = 'status';
+    statusEl.textContent = '';
+    if (!validate()) return;
+    setLoading(true);
+    await new Promise(r => setTimeout(r, 450));
+    const cleanEmail = emailEl.value.trim().toLowerCase();
+    const savedAcc = getSavedAccounts()[cleanEmail];
+    const rawPrefix = cleanEmail.split('@')[0].replace(/[._-]+/g, ' ');
+    const formattedName = (savedAcc && savedAcc.name) || rawPrefix
+      .split(' ')
+      .filter(Boolean)
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ') || 'Student';
+    statusEl.className = 'status ok';
+    statusEl.textContent = 'Logged in. Opening your workspace…';
+    launchWorkspaceWithUser(formattedName);
+  });
+
+  const suForm = document.getElementById('signupForm');
+  const suStatus = document.getElementById('suStatus');
+  const suBtn = document.getElementById('suSubmit');
+  const suLabel = document.getElementById('suLabel');
+  const suPw = document.getElementById('suPassword');
+  const strengthEl = document.getElementById('strength');
+  const strengthText = document.getElementById('strengthText');
+
+  ['suName:suNameControl:suNameError', 'suEmail:suEmailControl:suEmailError',
+   'suPassword:suPasswordControl:suPasswordError', 'suConfirm:suConfirmControl:suConfirmError']
+    .forEach(s => {
+      const [i, c, e] = s.split(':');
+      document.getElementById(i).addEventListener('input', () => setError(c, e, ''));
+    });
+  document.getElementById('terms').addEventListener('change', () => {
+    document.getElementById('termsError').textContent = '';
+  });
+
+  suPw.addEventListener('input', () => {
+    const v = suPw.value;
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[a-z]/.test(v) && /[A-Z]/.test(v)) score++;
+    if (/\d/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    strengthEl.dataset.score = score;
+    strengthText.textContent = v
+      ? ['Too weak', 'Weak', 'Okay', 'Good', 'Strong'][score]
+      : 'Use 8+ characters with letters, numbers and a symbol.';
+  });
+
+  function validateSignup() {
+    const name = document.getElementById('suName').value.trim();
+    const email = document.getElementById('suEmail').value.trim();
+    const pw = suPw.value;
+    const confirm = document.getElementById('suConfirm').value;
+    let ok = true;
+    const check = (cond, c, e, msg) => { setError(c, e, cond ? '' : msg); if (!cond) ok = false; };
+    check(name.length >= 2, 'suNameControl', 'suNameError', 'Enter your full name.');
+    check(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'suEmailControl', 'suEmailError',
+      email ? 'Enter a valid email, like student@university.edu.' : 'Enter your email address.');
+    check(pw.length >= 8, 'suPasswordControl', 'suPasswordError', 'Password must be at least 8 characters.');
+    check(confirm !== '' && confirm === pw, 'suConfirmControl', 'suConfirmError',
+      confirm ? 'Passwords do not match.' : 'Re-enter your password.');
+    const termsOk = document.getElementById('terms').checked;
+    document.getElementById('termsError').textContent = termsOk ? '' : 'Agree to the terms to continue.';
+    if (!termsOk) ok = false;
+    return ok;
+  }
+
+  suForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    suStatus.className = 'status';
+    suStatus.textContent = '';
+    if (!validateSignup()) return;
+    suBtn.disabled = true;
+    suBtn.classList.add('loading');
+    suLabel.textContent = 'Creating account…';
+    await new Promise(r => setTimeout(r, 450));
+    const fullName = document.getElementById('suName').value.trim();
+    const suEmailVal = document.getElementById('suEmail').value.trim();
+    saveAccount(suEmailVal, fullName);
+    suStatus.className = 'status ok';
+    suStatus.textContent = 'Account created. Opening your workspace…';
+    launchWorkspaceWithUser(fullName);
+  });
+
+  document.getElementById('termsLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    suStatus.className = 'status ok';
+    suStatus.textContent = 'Terms: Luminaries is an educational AI study assistant. Use responsibly for learning.';
+  });
+  document.getElementById('privacyLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    suStatus.className = 'status ok';
+    suStatus.textContent = 'Privacy: Your notes, chats, and profile stay locally in your browser—no data is sold.';
+  });
+
+  const views = { login: document.getElementById('loginView'), signup: document.getElementById('signupView') };
+  const copy = {
+    login: { doc: 'Log in — Luminaries' },
+    signup: { doc: 'Create account — Luminaries' }
+  };
+
+  function showView(name, focus) {
+    Object.keys(views).forEach(k => { views[k].hidden = k !== name; });
+    document.title = copy[name].doc;
+    statusEl.textContent = '';
+    suStatus.textContent = '';
+    document.getElementById('tabLogin').setAttribute('aria-selected', String(name === 'login'));
+    document.getElementById('tabSignup').setAttribute('aria-selected', String(name === 'signup'));
+    if (focus) views[name].querySelector('input').focus({ preventScroll: true });
+  }
+
+  function fromHash(first) {
+    if (location.hash === '#signup') showView('signup', !first);
+    else if (location.hash === '#login') showView('login', !first);
+    else if (first) showView('login', false);
+  }
+  document.querySelectorAll('[data-view]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const name = el.dataset.view;
+      showView(name, true);
+      try { history.replaceState(null, '', '#' + name); } catch (err) {}
+    });
+  });
+  window.addEventListener('hashchange', () => fromHash(false));
+  fromHash(true);
+</script>
+</body>
+</html>
